@@ -28,24 +28,7 @@
     <b>National University of Singapore &nbsp; | &nbsp;  ByteDance</b>
   </p>
   
-  <table align="center">
-    <tr>
-    <td>
-      <img src="assets/teaser/t1.gif">
-    </td>
-    <td>
-      <img src="assets/teaser/t4.gif">
-    </td>
-    </tr>
-    <tr>
-    <td>
-      <img src="assets/teaser/t3.gif">
-    </td>
-    <td>
-      <img src="assets/teaser/t2.gif">
-    </td>
-    </tr>
-  </table>
+
 
 ## 📢 News
 * **[2023.12.4]** Release inference code and gradio demo. We are working to improve MagicAnimate, stay tuned!
