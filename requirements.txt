@@ -53,15 +53,6 @@ multidict==6.0.4
 multiprocess==0.70.15
 networkx==3.1
 numpy==1.24.4
-nvidia-cuda-nvrtc-cu11==11.7.99
-nvidia-cuda-runtime-cu11==11.7.99
-nvidia-cudnn-cu11==8.9.4.19
-nvidia-cufft-cu11==10.9.0.58
-nvidia-curand-cu11==10.2.10.91
-nvidia-cusolver-cu11==11.4.0.1
-nvidia-cusparse-cu11==11.7.4.91
-nvidia-nccl-cu11==2022.5.19
-nvidia-nvtx-cu11==11.7.91
 oauthlib==3.2.2
 omegaconf==2.3.0
 opencv-python==4.8.0.76
