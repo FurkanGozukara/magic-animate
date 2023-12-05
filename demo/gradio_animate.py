@@ -13,8 +13,6 @@ import imageio
 import numpy as np
 import gradio as gr
 from PIL import Image
-import subprocess
-import os
 
 from demo.animate import MagicAnimate
 
@@ -31,17 +29,16 @@ with gr.Blocks() as demo:
         <a href="https://github.com/magic-research/magic-animate" style="margin-right: 20px; text-decoration: none; display: flex; align-items: center;">
         </a>
         <div>
-            <h1>MagicAnimate: Temporally Consistent Human Image Animation using Diffusion Model</h1>
+            <h1 >MagicAnimate: Temporally Consistent Human Image Animation using Diffusion Model</h1>
             <h5 style="margin: 0;">If you like our project, please give us a star ✨ on Github for the latest update.</h5>
-            <div style="display: flex; justify-content: center; align-items: center; text-align: center;">
+            <div style="display: flex; justify-content: center; align-items: center; text-align: center;>
                 <a href="https://arxiv.org/abs/2311.16498"><img src="https://img.shields.io/badge/Arxiv-2311.16498-red"></a>
                 <a href='https://showlab.github.io/magicanimate'><img src='https://img.shields.io/badge/Project_Page-MagicAnimate-green' alt='Project Page'></a>
                 <a href='https://github.com/magic-research/magic-animate'><img src='https://img.shields.io/badge/Github-Code-blue'></a>
             </div>
         </div>
         </div>
-        """
-    )
+        """)
     animation = gr.Video(format="mp4", label="Animation Results", autoplay=True)
     
     with gr.Row():
@@ -57,30 +54,10 @@ with gr.Blocks() as demo:
     def read_video(video):
         reader = imageio.get_reader(video)
         fps = reader.get_meta_data()['fps']
-
-        # Define the name for the converted video
-        converted_video = "converted_video.mp4"
-
-        if fps != 25.0:
-            # Use FFmpeg to convert the video to 25 fps
-            subprocess.run(['ffmpeg', '-i', video, '-r', '25', converted_video], check=True)
-            video = converted_video
-
-        # Check the video dimensions
-        width, height = reader.get_meta_data()['size']
-        if width != 512 or height != 512:
-            # Use FFmpeg to resize the video to 512x512
-            subprocess.run(['ffmpeg', '-i', video, '-vf', 'scale=512:512', converted_video], check=True)
-            video = converted_video
-
-        # Check if the conversion and resizing were successful and the file exists
-        if os.path.exists(video):
-            return video
-        else:
-            raise Exception("Video conversion and resizing failed.")
+        return video
     
-    def read_image(image, size=512):
-        return np.array(Image.fromarray(image).resize((size, size)))
+    def read_image(image):
+        return np.array(Image.fromarray(image))
     
     # when user uploads a new video
     motion_sequence.upload(
@@ -110,5 +87,6 @@ with gr.Blocks() as demo:
         inputs=[reference_image, motion_sequence],
         outputs=animation,
     )
+
 
 demo.launch(share=False,inbrowser=True)
