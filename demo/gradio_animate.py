@@ -13,6 +13,8 @@ import imageio
 import numpy as np
 import gradio as gr
 from PIL import Image
+import subprocess
+import os
 
 from demo.animate import MagicAnimate
 
@@ -31,14 +33,15 @@ with gr.Blocks() as demo:
         <div>
             <h1 >MagicAnimate: Temporally Consistent Human Image Animation using Diffusion Model</h1>
             <h5 style="margin: 0;">If you like our project, please give us a star ✨ on Github for the latest update.</h5>
-            <div style="display: flex; justify-content: center; align-items: center; text-align: center;>
+            <div style="display: flex; justify-content: center; align-items: center; text-align: center;">
                 <a href="https://arxiv.org/abs/2311.16498"><img src="https://img.shields.io/badge/Arxiv-2311.16498-red"></a>
                 <a href='https://showlab.github.io/magicanimate'><img src='https://img.shields.io/badge/Project_Page-MagicAnimate-green' alt='Project Page'></a>
                 <a href='https://github.com/magic-research/magic-animate'><img src='https://img.shields.io/badge/Github-Code-blue'></a>
             </div>
         </div>
         </div>
-        """)
+        """
+    )
     animation = gr.Video(format="mp4", label="Animation Results", autoplay=True)
     
     with gr.Row():
@@ -52,11 +55,24 @@ with gr.Blocks() as demo:
             submit              = gr.Button("Animate")
 
     def read_video(video):
-        size = int(size)
         reader = imageio.get_reader(video)
         fps = reader.get_meta_data()['fps']
-        assert fps == 25.0, f'Expected video fps: 25, but {fps} fps found'
-        return video
+        
+        if fps != 25.0:
+            # Define the name for the converted video
+            converted_video = "converted_video.mp4"
+
+            # Use FFmpeg to convert the video to 25 fps
+            subprocess.run(['ffmpeg', '-i', video, '-r', '25', converted_video], check=True)
+
+            # Check if the conversion was successful and the file exists
+            if os.path.exists(converted_video):
+                return converted_video
+            else:
+                raise Exception("Video conversion failed.")
+        else:
+            # If the video is already 25 fps, return it as is
+            return video
     
     def read_image(image, size=512):
         return np.array(Image.fromarray(image).resize((size, size)))
@@ -84,16 +100,10 @@ with gr.Blocks() as demo:
     gr.Markdown("## Examples")
     gr.Examples(
         examples=[
-            ["inputs/applications/source_image/monalisa.png", "inputs/applications/driving/densepose/running.mp4"],
-            ["inputs/applications/source_image/demo4.png", "inputs/applications/driving/densepose/demo4.mp4"],
-            ["inputs/applications/source_image/0002.png", "inputs/applications/driving/densepose/demo4.mp4"],
-            ["inputs/applications/source_image/dalle2.jpeg", "inputs/applications/driving/densepose/running2.mp4"],
-            ["inputs/applications/source_image/dalle8.jpeg", "inputs/applications/driving/densepose/dancing2.mp4"],
-            ["inputs/applications/source_image/multi1_source.png", "inputs/applications/driving/densepose/multi_dancing.mp4"],
+            ["inputs/applications/source_image/monalisa.png", "inputs/applications/driving/densepose/running.mp4"]
         ],
         inputs=[reference_image, motion_sequence],
         outputs=animation,
     )
 
-
-demo.launch(share=True)
+demo.launch(share=False,inbrowser=True)
