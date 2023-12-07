@@ -85,4 +85,4 @@ with gr.Blocks() as demo:
     )
 
 # Launch the app with or without sharing based on the command-line argument
-demo.launch(share=args.share, inbrowser=True)
+demo.queue().launch(share=args.share, inbrowser=True)
