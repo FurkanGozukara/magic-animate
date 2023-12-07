@@ -1,13 +1,3 @@
-# Copyright 2023 ByteDance and/or its affiliates.
-#
-# Copyright (2023) MagicAnimate Authors
-#
-# ByteDance, its affiliates and licensors retain all intellectual
-# property and proprietary rights in and to this material, related
-# documentation and any modifications thereto. Any use, reproduction,
-# disclosure or distribution of this material and related documentation
-# without an express license agreement from ByteDance or
-# its affiliates is strictly prohibited.
 import argparse
 import imageio
 import numpy as np
@@ -15,6 +5,11 @@ import gradio as gr
 from PIL import Image
 
 from demo.animate import MagicAnimate
+
+# Parse command-line arguments
+parser = argparse.ArgumentParser()
+parser.add_argument("--share", action="store_true", help="Launch the app with sharing enabled")
+args = parser.parse_args()
 
 animator = MagicAnimate()
 
@@ -84,15 +79,10 @@ with gr.Blocks() as demo:
     gr.Examples(
         examples=[
             ["inputs/applications/source_image/monalisa.png", "inputs/applications/driving/densepose/running.mp4"],
-            ["inputs/applications/source_image/demo4.png", "inputs/applications/driving/densepose/demo4.mp4"],
-            ["inputs/applications/source_image/0002.png", "inputs/applications/driving/densepose/demo4.mp4"],
-            ["inputs/applications/source_image/dalle2.jpeg", "inputs/applications/driving/densepose/running2.mp4"],
-            ["inputs/applications/source_image/dalle8.jpeg", "inputs/applications/driving/densepose/dancing2.mp4"],
-            ["inputs/applications/source_image/multi1_source.png", "inputs/applications/driving/densepose/multi_dancing.mp4"],
         ],
         inputs=[reference_image, motion_sequence],
         outputs=animation,
     )
 
-
-demo.launch(share=True)
+# Launch the app with or without sharing based on the command-line argument
+demo.launch(share=args.share, inbrowser=True)
