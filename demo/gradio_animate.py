@@ -44,7 +44,7 @@ with gr.Blocks() as demo:
             random_seed         = gr.Textbox(label="Random seed", value=1, info="default: -1")
             sampling_steps      = gr.Textbox(label="Sampling steps", value=25, info="default: 25")
             guidance_scale      = gr.Textbox(label="Guidance scale", value=7.5, info="default: 7.5")
-            debug               = gr.Checkbox(label="Merge Input Output Into Single Video", value=True)
+            debug               = gr.Checkbox(label="Merge Input Img + Video + Output Into Single Video", value=True)
             submit              = gr.Button("Animate")
 
     def read_video(video):
