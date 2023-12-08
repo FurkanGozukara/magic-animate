@@ -1,4 +1,4 @@
-pretrained_model_path: "magicanimate/pretrained_models/realisticVisionV60B1_v60B1VAE.safetensors"
+pretrained_model_path: "magicanimate/pretrained_models/Realistic_Vision_V6.0_NV_B1.safetensors"
 pretrained_vae_path: "magicanimate/pretrained_models/sd-vae-ft-mse"
 pretrained_controlnet_path: "magicanimate/pretrained_models/MagicAnimate/densepose_controlnet"
 pretrained_appearance_encoder_path: "magicanimate/pretrained_models/MagicAnimate/appearance_encoder"
